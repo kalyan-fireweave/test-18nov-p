@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(fw tool *)",
+      "Bash(fw status *)",
+      "Bash(fw sync *)",
+      "Edit(/.fireweave/tmp/**)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR:-.}/.fireweave/hooks/agent-gate.sh\"; [ -f \"$f\" ] && bash \"$f\" claude SessionStart || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR:-.}/.fireweave/hooks/agent-gate.sh\"; [ -f \"$f\" ] && bash \"$f\" claude UserPromptSubmit || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR:-.}/.fireweave/hooks/agent-gate.sh\"; [ -f \"$f\" ] && bash \"$f\" claude PreToolUse || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/rollout-build-gate-stop.sh\"; [ -f \"$f\" ] && bash \"$f\" || true"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+---
+description: When FireWeave applies (the gate in AGENTS.md)
+alwaysApply: true
+---
+
+<!-- fireweave:begin role=cursor-entry format=3 sha256=12ab48c34561bc56d0d2a42e00a7ae5d3c3cd2542d35c8f6d8b44fefca7717ed -->
+FireWeave applies only when the gate in the repository-root `AGENTS.md` says so: read it before you change behaviour.
+<!-- fireweave:end role=cursor-entry -->

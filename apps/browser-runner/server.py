@@ -1,3 +1,7 @@
+from fireweave.start import start
+from fireweave_setup.control_points import control_points
+start(control_points=control_points)
+
 import base64
 import hashlib
 import hmac

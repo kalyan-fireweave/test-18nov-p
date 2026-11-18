@@ -1,3 +1,4 @@
+import { fw } from '@fireweaveai/server-sdk/start';
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { organization } from "better-auth/plugins";
@@ -34,5 +35,14 @@ export const auth = betterAuth({
       },
     }),
   ],
+  databaseHooks: {
+    session: {
+      create: {
+        after: async (session) => {
+          await fw.identify(session.userId);
+        },
+      },
+    },
+  },
   trustedOrigins: originPair(env.authUrl),
 });
