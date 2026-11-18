@@ -1,4 +1,5 @@
 import { fw } from '@fireweaveai/server-sdk/start';
+import { eq } from "drizzle-orm";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { organization } from "better-auth/plugins";
@@ -38,8 +39,12 @@ export const auth = betterAuth({
   databaseHooks: {
     session: {
       create: {
-        after: async (session) => {
-          await fw.identify(session.userId);
+        after: async (created) => {
+          const [row] = await db
+            .select({ email: user.email })
+            .from(user)
+            .where(eq(user.id, created.userId));
+          if (row?.email) await fw.identify(row.email);
         },
       },
     },

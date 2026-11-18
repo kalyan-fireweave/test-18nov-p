@@ -28,8 +28,8 @@ export default function LoginPage() {
       setError(COPY.signInError);
       return;
     }
-    const userId = data?.user?.id;
-    if (userId) await fw.identify(userId);
+    const email = data?.user?.email;
+    if (email) await fw.identify(email);
     window.location.href = "/inbox";
   }
 
