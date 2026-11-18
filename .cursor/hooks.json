@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "bash .fireweave/hooks/agent-gate.sh cursor sessionStart"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "bash .fireweave/hooks/agent-gate.sh cursor preToolUse",
+        "matcher": "Write"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "bash .fireweave/hooks/agent-gate.sh cursor afterFileEdit"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/fireweave-rollout-stop.sh"
+      }
+    ]
+  }
+}

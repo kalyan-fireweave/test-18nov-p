@@ -3,4 +3,6 @@ name = "clinic-voice-worker"
 version = "0.0.0"
 description = "Placeholder for the LiveKit voice worker. Voice is a later phase."
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fireweave>=3,<4",
+]
