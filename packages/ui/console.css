@@ -52,6 +52,37 @@
   font-family: var(--font-sans), "Instrument Sans", "Segoe UI", sans-serif;
 }
 
+[data-theme="night"] {
+  --c-bg: #12151C;
+  --c-surface: #1A1F2A;
+  --c-surface-muted: #242A36;
+  --c-ink: #F4F5F2;
+  --c-body: #D5D8DE;
+  --c-muted: #A3AAB6;
+  --c-hairline: #2E3542;
+  --c-hairline-strong: #445062;
+  --c-blue: #9BB6DC;
+  --c-blue-hover: #C5D6EE;
+  --c-blue-soft: #243044;
+  --c-ok: #3D9A6A;
+  --c-mint: #173328;
+  --c-stat: #E08A4F;
+  --c-stat-soft: #3A2418;
+  --c-warn: #E0B15A;
+  --c-warn-bg: #332816;
+  --c-warn-border: #6A5424;
+  --c-err: #E07A7A;
+  --c-err-bg: #3A1E1E;
+  --c-err-border: #6A3030;
+  --c-live: #3DB57A;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-drawer: -8px 0 24px rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 3px rgba(155, 182, 220, 0.45);
+  color: var(--c-ink);
+  background: var(--c-bg);
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
 body {
@@ -94,6 +125,12 @@ h2, .card-title {
   height: 100vh;
 }
 .sidebar-brand { padding: 0 12px 12px; }
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 .brand {
   font-size: 18px;
   line-height: 1.2;

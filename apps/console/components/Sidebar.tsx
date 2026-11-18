@@ -1,9 +1,11 @@
 "use client";
 
+import { fw } from "@fireweaveai/web-sdk/start";
 import { Calendar, FileCheck, Inbox, LayoutDashboard, Mic, Settings, Sliders } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useCounts } from "../lib/counts";
 import { Button } from "./Button";
 
@@ -48,10 +50,57 @@ function NavItem({
   );
 }
 
+const THEME_STORAGE_KEY = "clinic-os-theme";
+
+function storedTheme(): "day" | "night" {
+  try {
+    return window.localStorage.getItem(THEME_STORAGE_KEY) === "night" ? "night" : "day";
+  } catch {
+    return "day";
+  }
+}
+
+function paintTheme(theme: "day" | "night") {
+  if (theme === "night") document.documentElement.dataset.theme = "night";
+  else delete document.documentElement.dataset.theme;
+}
+
 export function Sidebar({ clinicName, userName, role }: Props) {
   const path = usePathname();
   const { counts } = useCounts();
+  const [themeOn, setThemeOn] = useState(false);
+  const [theme, setTheme] = useState<"day" | "night">("day");
   const active = (href: string) => path === href || path.startsWith(`${href}/`) || (href === "/auth" && path.startsWith("/prior-auth"));
+
+  useEffect(() => {
+    const read = () => {
+      // @fireweave-controlpoint theme-toggle
+      setThemeOn(fw.controlPoints.getBooleanValue("theme-toggle", false));
+    };
+    read();
+    return fw.subscribe(read);
+  }, []);
+
+  useEffect(() => {
+    if (!themeOn) {
+      paintTheme("day");
+      return;
+    }
+    const next = storedTheme();
+    setTheme(next);
+    paintTheme(next);
+  }, [themeOn]);
+
+  function toggleTheme() {
+    const next = theme === "night" ? "day" : "night";
+    setTheme(next);
+    paintTheme(next);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      /* storage can be blocked; the choice still applies for this view */
+    }
+  }
 
   async function signOut() {
     await fetch("/api/auth/sign-out", { method: "POST" });
@@ -61,7 +110,14 @@ export function Sidebar({ clinicName, userName, role }: Props) {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="brand">Clinic OS</div>
+        <div className="brand-row">
+          <div className="brand">Clinic OS</div>
+          {themeOn ? (
+            <Button variant="ghost" size="sm" aria-pressed={theme === "night"} onClick={toggleTheme}>
+              {theme === "night" ? "Day" : "Night"}
+            </Button>
+          ) : null}
+        </div>
         {clinicName ? <div className="sidebar-clinic">{clinicName}</div> : null}
         <div className="sidebar-user">
           {role || "Staff"}
